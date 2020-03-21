@@ -6,7 +6,7 @@ enum TraversalOrder{PreOrder, Inorder, PostOrder};
 
 class BinarySearchTree
 {
-private:
+protected:
     class Node
     {
     private:
@@ -31,6 +31,26 @@ private:
         if(_data_value_ < current_node->data())
             current_node->left() = insert(current_node->left(),_data_value_);
         return current_node;
+    }
+
+    int get_depth(Node *current_node)
+    {
+        if(current_node == nullptr)
+            return 0;
+        return std::max(get_depth(current_node->left()), get_depth(current_node->right())) + 1;
+    }
+
+public:
+    BinarySearchTree(){}
+    BinarySearchTree(const std::vector<int> &_vector_)
+    {
+        for(auto element : _vector_)
+            this->insert(element);
+    }
+
+    void insert(int _data_value_)
+    {
+        this->_root_ = this->insert(this->_root_,_data_value_);
     }
 
     void traverse(Node *current_node, TraversalOrder _torder_ = TraversalOrder::Inorder)
@@ -58,22 +78,14 @@ private:
         }
     }
 
-public:
-    BinarySearchTree(){}
-    BinarySearchTree(const std::vector<int> &_vector_)
-    {
-        for(auto element : _vector_)
-            this->insert(element);
-    }
-
-    void insert(int _data_value_)
-    {
-        this->_root_ = this->insert(this->_root_,_data_value_);
-    }
-
     friend std::ostream & operator << (std::ostream &output_stream,BinarySearchTree &tree)
     {
         tree.traverse(tree._root_,TraversalOrder::PostOrder);
         return output_stream;
+    }
+
+    int get_depth()
+    {
+        return this->get_depth(this->_root_);
     }
 };
