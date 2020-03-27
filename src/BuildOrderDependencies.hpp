@@ -8,7 +8,6 @@ public:
     class DependencyGraph : public Graph
     {
     private:
-        enum State {visited, unvisited, current};
         std::vector<int> _build_order_;
     public:
         DependencyGraph(int node_count, GraphType type = GraphType::Undirected) : Graph(node_count,type){}
@@ -79,6 +78,7 @@ public:
         _graph_.insert(3,2);
 
         std::cout << _graph_ << std::endl;
-        _graph_.get_build_order();
+        // _graph_.get_build_order();
+        _graph_.BFS();
     }
 };

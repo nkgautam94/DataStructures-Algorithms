@@ -2,7 +2,10 @@
 #include<iostream>
 #include<list>
 #include<vector>
+#include<queue>
+
 enum GraphType { Directed, Undirected};
+enum State {visited, unvisited, current};
 class Graph
 {
 private:
@@ -38,6 +41,44 @@ public:
         std::vector<bool> visited(this->_nodes_,false);
         for(int current_node = 0; current_node < _nodes_; current_node++)
             _dfs_(current_node, visited);
+    }
+
+    void BFS()
+    {
+        std::queue<int> node_queue;
+        std::vector<State> node_state(_nodes_,State::unvisited);
+        std::vector<int> bfs_order;
+
+        for(int current_node = 0; current_node < _nodes_; current_node++)
+        {
+            if(node_state[current_node] == State::unvisited)
+            {
+                node_queue.push(current_node);
+                node_state[current_node] = State::current;
+            }
+
+            while (!node_queue.empty())
+            {
+                int node = node_queue.front();
+                node_queue.pop();
+                node_state[node] = State::visited;
+                bfs_order.push_back(node);
+
+                for(auto neighbours : _graph_list_[node])
+                {
+                    if(node_state[neighbours] != State::unvisited)
+                        continue;
+                    node_state[neighbours] = State::current;
+                    node_queue.push(neighbours);
+                }
+            }
+        }
+
+        std::cout << "BFS Order : ";
+        for(auto item : bfs_order)
+            std::cout << item << " ";
+        std::cout << std::endl;
+        return;
     }
 
     friend std::ostream & operator << (std::ostream &output_stream, Graph &graph)
