@@ -57,7 +57,7 @@ public:
     {
         if(current_node == nullptr)
             return;
-        
+
         if(_torder_ == TraversalOrder::PreOrder)
         {
             std::cout<< current_node->data() << " ";
@@ -80,7 +80,7 @@ public:
 
     friend std::ostream & operator << (std::ostream &output_stream,BinarySearchTree &tree)
     {
-        tree.traverse(tree._root_,TraversalOrder::PostOrder);
+        tree.traverse(tree._root_,TraversalOrder::Inorder);
         return output_stream;
     }
 
