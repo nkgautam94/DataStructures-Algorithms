@@ -9,6 +9,7 @@ namespace gautam
     private:
         class node;
         node *_entry_point_{nullptr};
+        enum Position{Begin,End};
 
         node * insert(node *current_node, KeyType key, ValueType value)
         {
@@ -103,8 +104,8 @@ namespace gautam
 
         void insert(KeyType key, ValueType value){this->_entry_point_ = this->insert(this->_entry_point_,key,value);}
         friend std::ostream & operator << (std::ostream &output_stream,map &_map_){_map_._inorder_(_map_._entry_point_);return output_stream;}
-        iterator begin() { return iterator(iterator::Begin,*this); }
-        iterator end() { return iterator(iterator::End,*this); }
+        iterator begin() { return iterator(Position::Begin,*this); }
+        iterator end() { return iterator(Position::End,*this); }
     };
 
     template<typename KeyType,typename ValueType>
@@ -132,11 +133,10 @@ namespace gautam
     {
     private:
         node *current_node{nullptr};
-        map &current_map;
+        map *current_map{nullptr};
     public:
-        enum Position{Begin,End};
         iterator(){}
-        iterator(Position _position_,map &_map_):current_map(_map_)
+        iterator(Position _position_,map &_map_):current_map(&_map_)
         {
             if(_position_ == Position::Begin)
                 current_node = _map_.find_min(_map_._entry_point_);
@@ -144,7 +144,8 @@ namespace gautam
                 current_node = nullptr;
         }
         std::pair<KeyType,ValueType> operator * () {return std::make_pair(current_node->key(),current_node->value());}
-        iterator & operator ++ () {this->current_node = this->current_map.get_inorder_successor(this->current_node);return *this;}
+        std::pair<KeyType,ValueType> operator -> () {return this->operator*();}
+        iterator & operator ++ () {this->current_node = this->current_map->get_inorder_successor(this->current_node);return *this;}
         iterator & operator ++ (int) {return this->operator++();}
         bool operator == (const iterator &other_iterator) const {return this->current_node == other_iterator.current_node;}
         bool operator != (const iterator &other_iterator) const {return this->current_node != other_iterator.current_node;}
