@@ -22,17 +22,6 @@ namespace gautam
             return current_node;
         }
 
-        node * insert(node *current_node, node *_node_)
-        {
-            if(current_node == nullptr)
-                current_node = _node_;
-            if(_node_->key() > current_node->key())
-                current_node->right() = insert(current_node->right(),_node_);
-            if(_node_->key() < current_node->key())
-                current_node->left() = insert(current_node->left(),_node_);
-            return current_node;
-        }
-
         void _inorder_(node *current_node)
         {
             if(current_node)
@@ -43,17 +32,23 @@ namespace gautam
             }
         }
 
-        node * _find_(node *current_node, KeyType _key_)
+        node *_find_or_insert_(node *current_node, KeyType _key_, node * &required_node)
         {
             if(current_node == nullptr)
-                return current_node;
+            {
+                required_node = new node(_key_,ValueType());
+                return required_node;
+            }
             if(current_node->key() == _key_)
+            {
+                required_node = current_node;
                 return current_node;
+            }
             if(_key_ > current_node->key())
-                return _find_(current_node->right(),_key_);
+                current_node->right() = _find_or_insert_(current_node->right(),_key_,required_node);
             if(_key_ < current_node->key())
-                return _find_(current_node->left(),_key_);
-            return nullptr;
+                current_node->left() = _find_or_insert_(current_node->left(),_key_,required_node);
+            return current_node;
         }
 
         node * find_min(node *entry_point)
@@ -87,21 +82,28 @@ namespace gautam
             return inorder_successor;
         }
 
+        void delete_node(node *current_node)
+        {
+            if(current_node)
+            {
+                delete_node(current_node->left());
+                delete_node(current_node->right());
+                delete current_node;
+            }
+        }
+
     public:
         map(){}
         class iterator;
 
         node & operator[](KeyType _key_)
         {
-            node *_node_ = _find_(_entry_point_,_key_);
-            if(_node_ == nullptr)
-            {
-                _node_ = new node(_key_,ValueType());
-                _entry_point_ = insert(_entry_point_,_node_);
-            }
-            return *_node_;
+            node *required_node = nullptr;
+            _entry_point_ =  _find_or_insert_(_entry_point_,_key_,required_node);
+            return *required_node;
         }
 
+        ~map(){this->delete_node(this->_entry_point_);}
         void insert(KeyType key, ValueType value){this->_entry_point_ = this->insert(this->_entry_point_,key,value);}
         friend std::ostream & operator << (std::ostream &output_stream,map &_map_){_map_._inorder_(_map_._entry_point_);return output_stream;}
         iterator begin() { return iterator(Position::Begin,*this); }
@@ -118,6 +120,7 @@ namespace gautam
         node *_right_{nullptr};
     public:
         node(){}
+        ~node(){}
         node(KeyType key,ValueType value):_key_(key),_value_(value){}
         node(std::pair<KeyType,ValueType> _pair_):node(_pair_.first,_pair_.second){}
         KeyType & key() {return this->_key_;}
@@ -136,6 +139,7 @@ namespace gautam
         map *current_map{nullptr};
     public:
         iterator(){}
+        ~iterator(){this->current_map = nullptr; this->current_node = nullptr;}
         iterator(Position _position_,map &_map_):current_map(&_map_)
         {
             if(_position_ == Position::Begin)
