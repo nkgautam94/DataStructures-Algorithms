@@ -6,7 +6,8 @@
 // #include "BuildOrderDependencies.hpp"
 // #include "CommonAncestorBT.hpp"
 // #include "BSTSequence.hpp"
-#include "map_implementation_tester.hpp"
+// #include "map_implementation_tester.hpp"
+#include "PathWithSum.hpp"
 
 int main()
 {
@@ -17,7 +18,9 @@ int main()
     // BuildOrder::execute();
     // CommonAncestor::execute();
     // BSTSequence::execute();
-    map_implementation_teste::execute();
+    // map_implementation_teste::execute();
+    PathWithSum::execute();
 
-
+    std::cout << "Executed!" << std::endl;
+    return 0;
 }
