@@ -14,8 +14,8 @@ private:
 
     bool _compare_(int value1, int value2)
     {
-        if(this->_type_ == HeapType::MaxHeap){return std::greater<int>()(value1,value2);}
-        if(this->_type_ == HeapType::MinHeap){return std::less<int>()(value1,value2);}
+        if(this->_type_ == HeapType::MaxHeap){return std::less<int>()(value1,value2);}
+        if(this->_type_ == HeapType::MinHeap){return std::greater<int>()(value1,value2);}
         return false;
     }
 
@@ -31,47 +31,25 @@ private:
             {
                 int parent_index = this->parent_index(_index_);
                 if(!check_bounds(parent_index)) break;
-                if(this->_type_ == HeapType::MaxHeap)
-                    {if(this->_heap_[parent_index] < this->_heap_[_index_]) _swap_ = true;_swap_index_ = parent_index;}
-                if(this->_type_ == HeapType::MinHeap)
-                    {if(this->_heap_[parent_index] > this->_heap_[_index_]) _swap_ = true;_swap_index_ = parent_index;}
+                if(this->_compare_(this->_heap_[parent_index], this->_heap_[_index_]))
+                    _swap_ = true;_swap_index_ = parent_index;
             }
 
             if(direction == Populate::Down)
             {
                 int swap_value = this->_heap_[_index_];
-                if(this->_type_ == HeapType::MaxHeap)
-                {
-                    if(check_bounds(left_index(_index_)))
-                        if(this->_heap_[left_index(_index_)] > swap_value)
-                        {
-                            _swap_ = true; _swap_index_ = left_index(_index_);
-                            swap_value = this->_heap_[left_index(_index_)];
-                        }
-
-                    if(check_bounds(right_index(_index_)))
-                        if(this->_heap_[right_index(_index_)] > swap_value)
-                        {
-                            _swap_ = true; _swap_index_ = right_index(_index_);
-                            swap_value = this->_heap_[right_index(_index_)];
-                        }
-                }
-                if(this->_type_ == HeapType::MinHeap)
-                {
-                    if(check_bounds(left_index(_index_)))
-                        if(this->_heap_[left_index(_index_)] < swap_value)
-                        {
-                            _swap_ = true; _swap_index_ = left_index(_index_);
-                            swap_value = this->_heap_[left_index(_index_)];
-                        }
-
-                    if(check_bounds(right_index(_index_)))
-                        if(this->_heap_[right_index(_index_)] < swap_value)
-                        {
-                            _swap_ = true; _swap_index_ = right_index(_index_);
-                            swap_value = this->_heap_[right_index(_index_)];
-                        }
-                }
+                if(check_bounds(left_index(_index_)))
+                    if(this->_compare_(swap_value, this->_heap_[left_index(_index_)]))
+                    {
+                        _swap_ = true; _swap_index_ = left_index(_index_);
+                        swap_value = this->_heap_[left_index(_index_)];
+                    }
+                if(check_bounds(right_index(_index_)))
+                    if(this->_compare_(swap_value, this->_heap_[right_index(_index_)]))
+                    {
+                        _swap_ = true; _swap_index_ = right_index(_index_);
+                        swap_value = this->_heap_[right_index(_index_)];
+                    }
             }
             if(_swap_)
             {
