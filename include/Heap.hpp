@@ -82,6 +82,7 @@ public:
     }
     int peek_top(){return this->_heap_[0];}
     bool empty(){return (this->_current_index_ >= 0)?(false):(true);}
+    int size(){return this->_current_index_ + 1;}
 
 protected:
     HeapType _type_{HeapType::MaxHeap};

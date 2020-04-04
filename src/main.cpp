@@ -8,7 +8,8 @@
 // #include "BSTSequence.hpp"
 // #include "map_implementation_tester.hpp"
 // #include "PathWithSum.hpp"
-#include "SleeepSort.hpp"
+// #include "SleeepSort.hpp"
+#include "MedianInDataStream.hpp"
 
 int main()
 {
@@ -21,7 +22,8 @@ int main()
     // BSTSequence::execute();
     // map_implementation_teste::execute();
     // PathWithSum::execute();
-    SleepSort::execute();
+    // SleepSort::execute();
+    MedianDataStream::exeute();
 
     std::cout << "Executed!" << std::endl;
     return 0;
