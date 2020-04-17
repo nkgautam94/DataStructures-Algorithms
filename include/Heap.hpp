@@ -30,9 +30,9 @@ private:
             if(direction == Populate::Up)
             {
                 int parent_index = this->parent_index(_index_);
-                if(!check_bounds(parent_index)) break;
+                if(!check_bounds(parent_index)) {break;}
                 if(this->_compare_(this->_heap_[parent_index], this->_heap_[_index_]))
-                    _swap_ = true;_swap_index_ = parent_index;
+                    {_swap_ = true;_swap_index_ = parent_index;}
             }
 
             if(direction == Populate::Down)
