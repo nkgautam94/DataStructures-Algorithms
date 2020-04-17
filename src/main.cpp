@@ -9,10 +9,12 @@
 // #include "map_implementation_tester.hpp"
 // #include "PathWithSum.hpp"
 // #include "SleeepSort.hpp"
-#include "MedianInDataStream.hpp"
+// #include "MedianInDataStream.hpp"
+#include "quick_sort_tester.hpp"
 
 int main()
 {
+    QuickSortTester::execute();
     // ListOfDepths::execute();
     // CheckBSTBalanced::execute();
     // InOrderSuccessor::execute();
@@ -23,7 +25,7 @@ int main()
     // map_implementation_teste::execute();
     // PathWithSum::execute();
     // SleepSort::execute();
-    MedianDataStream::exeute();
+    // MedianDataStream::exeute();
 
     std::cout << "Executed!" << std::endl;
     return 0;
