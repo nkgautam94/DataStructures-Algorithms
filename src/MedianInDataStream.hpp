@@ -1,7 +1,8 @@
 #include "Heap.hpp"
+#include "Utilities.hpp"
 #include<vector>
 #include<algorithm>
-#include<random>
+
 
 class MedianTracker
 {
@@ -76,21 +77,9 @@ Heap MedianTracker::right_heap{HeapType::MinHeap};
 class MedianDataStream
 {
 public:
-
-    static std::vector<int> get_random_vector()
-    {
-        std::default_random_engine generator;
-        std::uniform_int_distribution<int> distribution(-10,10);
-        int size = 100;
-        std::vector<int> random_vector;
-        for(int i=0; i<size; i++)
-            random_vector.push_back(distribution(generator));
-        return random_vector;
-    }
-
     static void exeute()
     {
-        std::vector<int> _vector_ = get_random_vector();
+        std::vector<int> _vector_ = UTILITY::get_random_vector();
         for(auto element : _vector_)
         {
             MedianTracker::insert(element);
